@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Biotic Potential vs Environmental Resistance: Population Dynamics in
+      Ecosystems
+    </title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sage-green: #87a96b;
+        --forest-green: #4a5d23;
+        --earth-brown: #8b4513;
+        --sky-blue: #6b9bd2;
+        --warm-beige: #f5e6d3;
+        --charcoal: #2c3e50;
+        --cream: #fefcf7;
+        --soft-gray: #f8f9fa;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--cream) 0%,
+          var(--warm-beige) 100%
+        );
+        color: var(--charcoal);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .hero-section {
+        position: relative;
+        height: 100vh;
+        background: url("NewZealand.webp") center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(44, 62, 80, 0.6);
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 2rem;
+      }
+
+      .hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: 4rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        40% {
+          transform: translateX(-50%) translateY(-10px);
+        }
+        60% {
+          transform: translateX(-50%) translateY(-5px);
+        }
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+        margin: 2rem 0;
+      }
+
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--charcoal);
+        text-align: center;
+        margin-bottom: 3rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .grid {
+        display: grid;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      }
+
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(135, 169, 107, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        margin-bottom: 1rem;
+      }
+
+      .chart-container {
+        width: 100%;
+        height: 400px;
+        margin: 1rem 0;
+      }
+
+      .chart-container-large {
+        width: 100%;
+        height: 500px;
+        margin: 1rem 0;
+      }
+
+      .insight-box {
+        background: linear-gradient(135deg, var(--sage-green), var(--sky-blue));
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+      }
+
+      .insight-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+      }
+
+      .key-facts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .fact-item {
+        background: var(--soft-gray);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid var(--sage-green);
+        text-align: center;
+      }
+
+      .fact-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        display: block;
+      }
+
+      .fact-label {
+        font-size: 0.9rem;
+        color: var(--charcoal);
+        opacity: 0.8;
+      }
+
+      .resistance-factors {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      .factor-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .factor-item:hover {
+        border-color: var(--sage-green);
+        transform: scale(1.05);
+      }
+
+      .factor-icon {
+        font-size: 2rem;
+        color: var(--sage-green);
+        margin-bottom: 0.5rem;
+      }
+
+      .factor-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .factor-impact {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--forest-green);
+      }
+
+      .conclusion-section {
+        background: var(--forest-green);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .conclusion-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      .conclusion-text {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.8;
+      }
+
+      .download-section {
+        background: var(--sage-green);
+        color: white;
+        padding: 2rem 0;
+        text-align: center;
+      }
+
+      .download-btn {
+        display: inline-block;
+        background: white;
+        color: var(--forest-green);
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .download-btn:hover {
+        background: var(--warm-beige);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+        .section-title {
+          font-size: 2rem;
+        }
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .chart-container,
+        .chart-container-large {
+          height: 300px;
+        }
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Biotic Potential vs Environmental Resistance</h1>
+        <p class="hero-subtitle">
+          Understanding the Dynamic Balance of Population Growth in Ecosystems
+        </p>
+      </div>
+      <div class="scroll-indicator">
+        <i class="fas fa-chevron-down fa-2x"></i>
+      </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">The Balance of Nature</h2>
+          <p class="section-subtitle">
+            Every species has the potential for unlimited growth, but
+            environmental factors create resistance that maintains ecological
+            balance. This infographic explores how biotic potential and
+            environmental resistance interact to shape population dynamics in
+            ecosystems.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biotic Potential Section -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">
+            Biotic Potential: Nature's Growth Engine
+          </h2>
+          <p class="section-subtitle">
+            Biotic potential represents the maximum reproductive capacity of a
+            species under ideal conditions with unlimited resources and no
+            environmental constraints.
+          </p>
+
+          <div class="key-facts">
+            <div class="fact-item">
+              <span class="fact-number">1,000,000</span>
+              <span class="fact-label">Bacteria offspring per year</span>
+            </div>
+            <div class="fact-item">
+              <span class="fact-number">1,000</span>
+              <span class="fact-label">Insect offspring per year</span>
+            </div>
+            <div class="fact-item">
+              <span class="fact-number">12</span>
+              <span class="fact-label">Human offspring per female</span>
+            </div>
+            <div class="fact-item">
+              <span class="fact-number">1</span>
+              <span class="fact-label">Elephant offspring per year</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">
+              Species Comparison: Reproductive Capacity
+            </h3>
+            <div id="biotic-potential-chart" class="chart-container"></div>
+            <div class="insight-box">
+              <div class="insight-title">Key Insight</div>
+              <p>
+                Smaller organisms with shorter generation times exhibit
+                exponentially higher biotic potential. Bacteria can produce over
+                a million offspring annually, while large mammals like elephants
+                produce only one offspring every 3-4 years.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Environmental Resistance Section -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">
+            Environmental Resistance: Nature's Control System
+          </h2>
+          <p class="section-subtitle">
+            Environmental resistance factors limit population growth by
+            increasing mortality rates and reducing reproductive success,
+            preventing species from reaching their full biotic potential.
+          </p>
+
+          <div class="grid grid-2">
+            <div class="card">
+              <h3 class="card-title">Primary Resistance Factors</h3>
+              <div id="resistance-factors-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">Factor Types</h3>
+              <div class="resistance-factors">
+                <div class="factor-item">
+                  <div class="factor-icon"><i class="fas fa-paw"></i></div>
+                  <div class="factor-name">Predation</div>
+                  <div class="factor-impact">25%</div>
+                </div>
+                <div class="factor-item">
+                  <div class="factor-icon"><i class="fas fa-virus"></i></div>
+                  <div class="factor-name">Disease</div>
+                  <div class="factor-impact">20%</div>
+                </div>
+                <div class="factor-item">
+                  <div class="factor-icon"><i class="fas fa-utensils"></i></div>
+                  <div class="factor-name">Competition</div>
+                  <div class="factor-impact">18%</div>
+                </div>
+                <div class="factor-item">
+                  <div class="factor-icon">
+                    <i class="fas fa-cloud-rain"></i>
+                  </div>
+                  <div class="factor-name">Climate</div>
+                  <div class="factor-impact">15%</div>
+                </div>
+                <div class="factor-item">
+                  <div class="factor-icon"><i class="fas fa-home"></i></div>
+                  <div class="factor-name">Habitat Loss</div>
+                  <div class="factor-impact">12%</div>
+                </div>
+                <div class="factor-item">
+                  <div class="factor-icon"><i class="fas fa-industry"></i></div>
+                  <div class="factor-name">Pollution</div>
+                  <div class="factor-impact">5%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-box">
+            <div class="insight-title">Biotic vs Abiotic Factors</div>
+            <p>
+              Biotic factors (predation, disease, competition) account for 63%
+              of environmental resistance, while abiotic factors (climate,
+              habitat loss, resource scarcity, pollution) contribute 37%. This
+              shows the critical role of biological interactions in population
+              regulation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Population Growth Curves Section -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">Population Growth Patterns</h2>
+          <p class="section-subtitle">
+            Compare theoretical exponential growth (biotic potential) with
+            realistic logistic growth shaped by environmental resistance.
+          </p>
+
+          <div class="card">
+            <h3 class="card-title">Theoretical vs Actual Population Growth</h3>
+            <div id="growth-curves-chart" class="chart-container-large"></div>
+            <div class="insight-box">
+              <div class="insight-title">Carrying Capacity</div>
+              <p>
+                The S-shaped logistic curve shows how populations stabilize at
+                carrying capacity (K=10,000), where birth rates equal death
+                rates. Environmental resistance prevents the unlimited growth
+                predicted by biotic potential alone.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Ecosystem Example -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">Ecosystem in Action: Rabbit Population</h2>
+          <p class="section-subtitle">
+            Explore how biotic potential and environmental resistance interact
+            in a real ecosystem using rabbits as an example.
+          </p>
+
+          <div class="grid grid-3">
+            <div class="card">
+              <h3 class="card-title">Rabbit Biotic Potential</h3>
+              <div class="fact-number">48</div>
+              <div class="fact-label">Offspring per year maximum</div>
+              <p style="margin-top: 1rem; font-size: 0.9rem">
+                Rabbits can reproduce every 30 days with litters of 6-8 young,
+                giving them high reproductive capacity.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">Environmental Pressures</h3>
+              <div style="margin: 1rem 0">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0.5rem 0;
+                  "
+                >
+                  <span>Predators (foxes, coyotes)</span>
+                  <span style="color: var(--forest-green); font-weight: 600"
+                    >30% reduction</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0.5rem 0;
+                  "
+                >
+                  <span>Disease outbreaks</span>
+                  <span style="color: var(--forest-green); font-weight: 600"
+                    >25% reduction</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0.5rem 0;
+                  "
+                >
+                  <span>Food competition</span>
+                  <span style="color: var(--forest-green); font-weight: 600"
+                    >20% reduction</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0.5rem 0;
+                  "
+                >
+                  <span>Weather/climate</span>
+                  <span style="color: var(--forest-green); font-weight: 600"
+                    >15% reduction</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">Actual Population Growth</h3>
+              <div class="fact-number">8-12</div>
+              <div class="fact-label">Actual offspring per year</div>
+              <p style="margin-top: 1rem; font-size: 0.9rem">
+                Environmental resistance reduces rabbit reproductive success by
+                75-85%, maintaining ecosystem balance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section class="conclusion-section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="conclusion-title">The Delicate Balance</h2>
+          <p class="conclusion-text">
+            The interaction between biotic potential and environmental
+            resistance creates the dynamic equilibrium that sustains ecosystems
+            worldwide. While species possess incredible reproductive capacity,
+            environmental factors ensure that populations remain in balance with
+            their habitat's carrying capacity. This fundamental principle
+            governs all life on Earth, from microscopic bacteria to the largest
+            mammals, maintaining the biodiversity and stability of our planet's
+            ecosystems.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Section Link -->
+    <section class="section" style="background: var(--soft-gray)">
+      <div class="container">
+        <div class="fade-in">
+          <div class="card" style="text-align: center; padding: 3rem">
+            <h3 class="card-title" style="font-size: 2rem; margin-bottom: 1rem">
+              <i
+                class="fas fa-hands-helping"
+                style="color: var(--sage-green); margin-right: 1rem"
+              ></i>
+              Take Action: Our Group's Contribution
+            </h3>
+            <p
+              style="
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            >
+              Discover how our group is actively influencing population dynamics
+              through practical conservation and prevention efforts. Learn about
+              our two-pronged approach to making a real environmental impact.
+            </p>
+            <a
+              href="/action_section.html"
+              class="download-btn"
+              style="
+                background: rgb(255, 255, 255);
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+              "
+            >
+              <i class="fas fa-arrow-right"></i> Explore Our Action Plan
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section">
+      <div class="container">
+        <h3 style="margin-bottom: 1rem">Download Data & Resources</h3>
+        <p style="margin-bottom: 2rem">
+          Access the complete dataset and supporting materials for further
+          analysis and education.
+        </p>
+        <a href="biotic_potential_data.json" class="download-btn" download>
+          <i class="fas fa-download"></i> Biotic Potential Data (JSON)
+        </a>
+        <a
+          href="environmental_resistance_data.json"
+          class="download-btn"
+          download
+        >
+          <i class="fas fa-download"></i> Environmental Resistance Data (JSON)
+        </a>
+        <a href="population_growth_data.json" class="download-btn" download>
+          <i class="fas fa-download"></i> Population Growth Data (JSON)
+        </a>
+      </div>
+    </section>
+
+    <script>
+      // Fade in animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".fade-in").forEach((el) => {
+        observer.observe(el);
+      });
+
+      // Biotic Potential Chart
+      const bioticData = [
+        {
+          x: [
+            "Bacteria",
+            "Fruit Fly",
+            "Mice",
+            "Rabbits",
+            "Geese",
+            "Humans",
+            "Elephants",
+            "Whales",
+          ],
+          y: [1000000, 1000, 120, 48, 12, 12, 1, 1],
+          type: "bar",
+          marker: {
+            color: [
+              "#87A96B",
+              "#6B9BD2",
+              "#8B4513",
+              "#4A5D23",
+              "#87A96B",
+              "#6B9BD2",
+              "#8B4513",
+              "#4A5D23",
+            ],
+            line: { width: 0 },
+          },
+          text: ["1M", "1K", "120", "48", "12", "12", "1", "1"],
+          textposition: "outside",
+          hovertemplate:
+            "<b>%{x}</b><br>Offspring per year: %{y}<extra></extra>",
+        },
+      ];
+
+      const bioticLayout = {
+        title: {
+          text: "Maximum Reproductive Capacity by Species",
+          font: { size: 18, color: "#2C3E50" },
+        },
+        xaxis: {
+          title: "Species",
+          tickangle: -45,
+          font: { size: 12 },
+        },
+        yaxis: {
+          title: "Offspring per Year (Log Scale)",
+          type: "log",
+          font: { size: 12 },
+        },
+        margin: { t: 60, b: 120, l: 80, r: 40 },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        font: { family: "Inter, sans-serif" },
+      };
+
+      Plotly.newPlot("biotic-potential-chart", bioticData, bioticLayout, {
+        responsive: true,
+      });
+
+      // Environmental Resistance Chart
+      const resistanceData = [
+        {
+          x: [
+            "Predation",
+            "Disease",
+            "Competition",
+            "Climate",
+            "Habitat Loss",
+            "Resources",
+            "Pollution",
+            "Human Activity",
+          ],
+          y: [25, 20, 18, 15, 12, 8, 5, 3],
+          type: "bar",
+          marker: {
+            color: [
+              "#87A96B",
+              "#6B9BD2",
+              "#8B4513",
+              "#4A5D23",
+              "#87A96B",
+              "#6B9BD2",
+              "#8B4513",
+              "#4A5D23",
+            ],
+            line: { width: 0 },
+          },
+          text: ["25%", "20%", "18%", "15%", "12%", "8%", "5%", "3%"],
+          textposition: "outside",
+          hovertemplate: "<b>%{x}</b><br>Impact: %{y}%<extra></extra>",
+        },
+      ];
+
+      const resistanceLayout = {
+        title: {
+          text: "Environmental Resistance Factors Impact",
+          font: { size: 18, color: "#2C3E50" },
+        },
+        xaxis: {
+          title: "Resistance Factors",
+          tickangle: -45,
+          font: { size: 12 },
+        },
+        yaxis: {
+          title: "Impact Percentage (%)",
+          font: { size: 12 },
+        },
+        margin: { t: 60, b: 120, l: 80, r: 40 },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        font: { family: "Inter, sans-serif" },
+      };
+
+      Plotly.newPlot(
+        "resistance-factors-chart",
+        resistanceData,
+        resistanceLayout,
+        { responsive: true }
+      );
+
+      // Population Growth Curves
+      const timeData = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20,
+      ];
+      const exponentialGrowth = [
+        100, 141.42, 200, 282.84, 400, 565.69, 800, 1131.37, 1600, 2262.74,
+        3200, 4525.48, 6400, 9050.96, 12800, 18101.93, 25600, 36203.85, 51200,
+        72407.7, 102400,
+      ];
+      const logisticGrowth = [
+        100, 163.81, 267.24, 433.09, 694.53, 1095.72, 1686.65, 2506.55, 3554.61,
+        4762.38, 6000, 7142.86, 8000, 8571.43, 8888.89, 9090.91, 9230.77,
+        9333.33, 9411.76, 9473.68, 9523.81,
+      ];
+      const carryingCapacity = [
+        10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,
+        10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,
+        10000,
+      ];
+
+      const growthData = [
+        {
+          x: timeData,
+          y: exponentialGrowth,
+          type: "scatter",
+          mode: "lines",
+          name: "Exponential Growth (Biotic Potential)",
+          line: { color: "#87A96B", width: 3 },
+        },
+        {
+          x: timeData,
+          y: logisticGrowth,
+          type: "scatter",
+          mode: "lines",
+          name: "Logistic Growth (With Resistance)",
+          line: { color: "#6B9BD2", width: 3 },
+        },
+        {
+          x: timeData,
+          y: carryingCapacity,
+          type: "scatter",
+          mode: "lines",
+          name: "Carrying Capacity",
+          line: { color: "#8B4513", width: 2, dash: "dash" },
+        },
+      ];
+
+      const growthLayout = {
+        title: {
+          text: "Population Growth Over Time",
+          font: { size: 20, color: "#2C3E50" },
+        },
+        xaxis: {
+          title: "Time (Years)",
+          font: { size: 14 },
+        },
+        yaxis: {
+          title: "Population Size",
+          font: { size: 14 },
+        },
+        legend: {
+          x: 0.02,
+          y: 0.98,
+          bgcolor: "rgba(255,255,255,0.8)",
+        },
+        margin: { t: 80, b: 80, l: 80, r: 40 },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        font: { family: "Inter, sans-serif" },
+      };
+
+      Plotly.newPlot("growth-curves-chart", growthData, growthLayout, {
+        responsive: true,
+      });
+
+      // Smooth scroll for navigation
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

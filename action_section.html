@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Group's Contribution: Influencing Population Dynamics</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --sage-green: #87a96b;
+        --forest-green: #4a5d23;
+        --earth-brown: #8b4513;
+        --sky-blue: #6b9bd2;
+        --warm-beige: #f5e6d3;
+        --charcoal: #2c3e50;
+        --cream: #fefcf7;
+        --soft-gray: #f8f9fa;
+        --action-orange: #e67e22;
+        --conservation-blue: #3498db;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--cream) 0%,
+          var(--warm-beige) 100%
+        );
+        color: var(--charcoal);
+        line-height: 1.6;
+      }
+
+      .action-hero {
+        background: linear-gradient(
+          135deg,
+          var(--forest-green),
+          var(--sage-green)
+        );
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: 3rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .strategy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 3rem;
+        margin: 3rem 0;
+      }
+
+      .strategy-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .strategy-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(
+          90deg,
+          var(--action-orange),
+          var(--conservation-blue)
+        );
+      }
+
+      .strategy-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+
+      .prevention-card {
+        border-left: 6px solid var(--action-orange);
+      }
+
+      .conservation-card {
+        border-left: 6px solid var(--conservation-blue);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .card-icon {
+        font-size: 3rem;
+        margin-right: 1rem;
+      }
+
+      .prevention-icon {
+        color: var(--action-orange);
+      }
+
+      .conservation-icon {
+        color: var(--conservation-blue);
+      }
+
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--forest-green);
+      }
+
+      .card-subtitle {
+        font-size: 1.1rem;
+        color: var(--charcoal);
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+
+      .action-steps {
+        list-style: none;
+        margin: 2rem 0;
+      }
+
+      .action-steps li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: var(--soft-gray);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .action-steps li:hover {
+        background: var(--warm-beige);
+        transform: translateX(5px);
+      }
+
+      .step-number {
+        background: var(--sage-green);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--forest-green);
+      }
+
+      .step-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .impact-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .metric-card {
+        background: linear-gradient(135deg, var(--sage-green), var(--sky-blue));
+        color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .metric-card:hover {
+        transform: scale(1.05);
+      }
+
+      .metric-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .timeline {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 3rem 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .timeline-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border-left: 4px solid var(--sage-green);
+        background: var(--soft-gray);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .timeline-item:hover {
+        background: var(--warm-beige);
+        transform: translateX(10px);
+      }
+
+      .timeline-week {
+        background: var(--forest-green);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-right: 1.5rem;
+        min-width: 80px;
+        text-align: center;
+      }
+
+      .timeline-content {
+        flex: 1;
+      }
+
+      .timeline-phase {
+        font-weight: 600;
+        color: var(--forest-green);
+        margin-bottom: 0.5rem;
+      }
+
+      .resources-section {
+        background: var(--soft-gray);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 3rem 0;
+      }
+
+      .resources-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--forest-green);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .resource-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .resource-icon {
+        font-size: 2rem;
+        color: var(--sage-green);
+        margin-bottom: 1rem;
+      }
+
+      .resource-title {
+        font-weight: 600;
+        color: var(--forest-green);
+        margin-bottom: 0.5rem;
+      }
+
+      .download-btn {
+        display: inline-block;
+        background: var(--sage-green);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .download-btn:hover {
+        background: var(--forest-green);
+        transform: translateY(-2px);
+      }
+
+      .conclusion-section {
+        background: linear-gradient(
+          135deg,
+          var(--forest-green),
+          var(--sage-green)
+        );
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .conclusion-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      .conclusion-text {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.8;
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .hero-subtitle {
+          font-size: 1.1rem;
+        }
+        .strategy-grid {
+          grid-template-columns: 1fr;
+        }
+        .section-title {
+          font-size: 2rem;
+        }
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="action-hero">
+      <div class="container">
+        <h1 class="hero-title">Our Group's Contribution</h1>
+        <p class="hero-subtitle">
+          Influencing Population Dynamics Through Local Action and School-Based
+          Initiatives
+        </p>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="section-title">Taking Action: From Learning to Doing</h2>
+          <p
+            style="
+              text-align: center;
+              font-size: 1.2rem;
+              max-width: 800px;
+              margin: 0 auto;
+              color: var(--charcoal);
+            "
+          >
+            As students, we aim to apply our understanding of biotic potential
+            and environmental resistance through simple, achievable school and
+            community projects that make a real impact.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Pronged Strategy -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <div class="strategy-grid">
+            <!-- Prevention Strategy -->
+            <div class="strategy-card prevention-card">
+              <div class="card-header">
+                <i class="fas fa-shield-alt card-icon prevention-icon"></i>
+                <h3 class="card-title">The Prevention Effort</h3>
+              </div>
+              <p class="card-subtitle">
+                <strong>Increasing Environmental Resistance</strong><br />
+                Managing pest populations by maintaining cleanliness and reducing
+                breeding grounds.
+              </p>
+
+              <h4
+                style="
+                  color: var(--action-orange);
+                  margin-bottom: 1rem;
+                  font-weight: 600;
+                "
+              >
+                Target Focus: Mosquitoes and Rats Around School
+              </h4>
+
+              <ul class="action-steps">
+                <li>
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <div class="step-title">Clean-Up Drives</div>
+                    <div class="step-description">
+                      Organize weekly clean-up drives in the school and nearby
+                      community to remove trash and potential pest habitats.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <div class="step-title">“No Standing Water” Check</div>
+                    <div class="step-description">
+                      Inspect and cover containers that collect stagnant water to
+                      prevent mosquito breeding.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <div class="step-title">Proper Waste Disposal</div>
+                    <div class="step-description">
+                      Encourage classmates and teachers to use closed trash bins and
+                      segregate waste properly.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <div class="step-title">Information Sharing</div>
+                    <div class="step-description">
+                      Create posters and announcements on how simple habits can
+                      reduce pest problems around school.
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="impact-metrics">
+                <div class="metric-card">
+                  <span class="metric-number">100+</span>
+                  <span class="metric-label">Students Participating</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-number">Visible</span>
+                  <span class="metric-label">Reduction in Pest Sightings</span>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: var(--warm-beige);
+                  padding: 1.5rem;
+                  border-radius: 12px;
+                  margin-top: 2rem;
+                "
+              >
+                <h5
+                  style="
+                    color: var(--forest-green);
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                  "
+                >
+                  Impact:
+                </h5>
+                <p>
+                  By maintaining cleanliness and reducing standing water, we help
+                  increase environmental resistance, limiting the growth of pest
+                  populations in our school community.
+                </p>
+              </div>
+            </div>
+
+            <!-- Conservation Strategy -->
+            <div class="strategy-card conservation-card">
+              <div class="card-header">
+                <i class="fas fa-leaf card-icon conservation-icon"></i>
+                <h3 class="card-title">The Conservation Effort</h3>
+              </div>
+              <p class="card-subtitle">
+                <strong>Decreasing Environmental Resistance</strong><br />
+                Supporting beneficial species by improving local green spaces and
+                promoting biodiversity.
+              </p>
+
+              <h4
+                style="
+                  color: var(--conservation-blue);
+                  margin-bottom: 1rem;
+                  font-weight: 600;
+                "
+              >
+                Target Focus: Local Birds and Pollinators
+              </h4>
+
+              <ul class="action-steps">
+                <li>
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <div class="step-title">School Garden Project</div>
+                    <div class="step-description">
+                      Plant native flowering plants and trees that provide food and
+                      shelter for pollinators and birds.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <div class="step-title">Recycling for Plant Pots</div>
+                    <div class="step-description">
+                      Use recycled bottles and containers as planters to promote
+                      sustainability.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <div class="step-title">Awareness Campaign</div>
+                    <div class="step-description">
+                      Conduct short classroom presentations or bulletin board
+                      displays on the importance of local wildlife.
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <div class="step-title">Tree Planting Activity</div>
+                    <div class="step-description">
+                      Coordinate with school administration to plant trees within or
+                      near the school grounds to provide habitats for birds.
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="impact-metrics">
+                <div class="metric-card">
+                  <span class="metric-number">50+</span>
+                  <span class="metric-label">New Plants or Trees Grown</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-number">High</span>
+                  <span class="metric-label">Student Participation</span>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: var(--warm-beige);
+                  padding: 1.5rem;
+                  border-radius: 12px;
+                  margin-top: 2rem;
+                "
+              >
+                <h5
+                  style="
+                    color: var(--forest-green);
+                    margin-bottom: 1rem;
+                    font-weight: 600;
+                  "
+                >
+                  Impact:
+                </h5>
+                <p>
+                  By creating green spaces and promoting awareness, we help
+                  decrease environmental resistance for beneficial species,
+                  allowing them to thrive within our school community.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Implementation Timeline -->
+    <section class="section" style="background: var(--soft-gray);">
+      <div class="container">
+        <div class="fade-in">
+          <div class="timeline">
+            <h3 class="timeline-title">Implementation Timeline</h3>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 1</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Planning</div>
+                <p>
+                  Identify target areas in the school for cleaning and gardening.
+                  Assign group roles and prepare materials.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 2</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Awareness Preparation</div>
+                <p>
+                  Design posters and infographics about pest prevention and
+                  conservation. Gather recyclable materials for planting.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 3</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Action Week</div>
+                <p>
+                  Conduct the clean-up drive and “No Standing Water
+              <div class="timeline-week">Week 3</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Campaign Launch</div>
+                <p>
+                  Begin waste management drive, start water containment
+                  initiative, launch social media awareness campaign.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 4</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Conservation Action</div>
+                <p>
+                  Organize fundraising event for Tamaraw protection, conduct
+                  habitat awareness workshops, begin community engagement.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 5</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Monitoring & Assessment</div>
+                <p>
+                  Measure pest population changes, track community
+                  participation, evaluate conservation impact.
+                </p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-week">Week 6</div>
+              <div class="timeline-content">
+                <div class="timeline-phase">Documentation & Sharing</div>
+                <p>
+                  Create final report, share results with community, present
+                  findings to school and conservation partners.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources and Tools -->
+    <section class="section">
+      <div class="container">
+        <div class="fade-in">
+          <div class="resources-section">
+            <h3 class="resources-title">Resources & Tools</h3>
+            <div class="resource-grid">
+              <div class="resource-card">
+                <i class="fas fa-chart-line resource-icon"></i>
+                <h4 class="resource-title">Population Tracking Tools</h4>
+                <p>
+                  Data collection sheets and mobile apps for monitoring pest
+                  populations and environmental changes.
+                </p>
+                <a href="#" class="download-btn">Download Templates</a>
+              </div>
+
+              <div class="resource-card">
+                <i class="fas fa-bullhorn resource-icon"></i>
+                <h4 class="resource-title">Educational Materials</h4>
+                <p>
+                  Posters, flyers, and presentation templates for community
+                  education campaigns.
+                </p>
+                <a href="#" class="download-btn">Access Materials</a>
+              </div>
+
+              <div class="resource-card">
+                <i class="fas fa-handshake resource-icon"></i>
+                <h4 class="resource-title">Partnership Guide</h4>
+                <p>
+                  Contact information and partnership guidelines for working
+                  with conservation organizations.
+                </p>
+                <a href="#" class="download-btn">View Guide</a>
+              </div>
+
+              <div class="resource-card">
+                <i class="fas fa-calculator resource-icon"></i>
+                <h4 class="resource-title">Impact Calculator</h4>
+                <p>
+                  Tools to measure and quantify the ecological impact of our
+                  prevention and conservation efforts.
+                </p>
+                <a href="#" class="download-btn">Use Calculator</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="conclusion-section">
+      <div class="container">
+        <div class="fade-in">
+          <h2 class="conclusion-title">Making a Real Difference</h2>
+          <p class="conclusion-text">
+            Through this two-pronged approach, our group will not only
+            understand the scientific principles of population dynamics but
+            actively influence them for positive environmental outcomes. By
+            simultaneously increasing environmental resistance for pest species
+            and decreasing it for endangered species, we demonstrate the
+            practical application of ecological science in real-world
+            conservation and management scenarios.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Fade in animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".fade-in").forEach((el) => {
+        observer.observe(el);
+      });
+
+      // Interactive hover effects for action steps
+      document.querySelectorAll(".action-steps li").forEach((step) => {
+        step.addEventListener("mouseenter", function () {
+          this.style.backgroundColor = "#F5E6D3";
+        });
+
+        step.addEventListener("mouseleave", function () {
+          this.style.backgroundColor = "#F8F9FA";
+        });
+      });
+    </script>
+  </body>
+</html>
